@@ -1,21 +1,32 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthComponent } from './pages/auth/auth.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const routes:Routes = [
   {
+    path:'login',
+    component: LoginComponent,
+  },
+  {
+    path:'register',
+    component: RegisterComponent,
+  },
+  {
     path:'',
-    component: AuthComponent,
+    component: LoginComponent,
     pathMatch: 'full'
   }
 ]
 
 @NgModule({
-  declarations: [AuthComponent],
+  declarations: [LoginComponent, RegisterComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    ReactiveFormsModule,
   ],
 })
 export class AuthModule { }
