@@ -12,8 +12,8 @@ export class LocalStorageService {
   }
 
   // Get a value from local storage
-  getItem(key: string): string | null {
-    return localStorage.getItem(key);
+  getItem(key: string): any | null {
+    return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)!) : null
   }
 
   // Remove a value from local storage
