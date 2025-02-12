@@ -1,0 +1,157 @@
+<div
+  class="font-sans w-full py-8 px-10 rounded-3xl bg-gradient-to-br from-green-800 to-green-400 shadow-lg relative overflow-x-hidden text-white"
+>
+  <!-- Dollar Sign SVG -->
+  <svg
+    class="absolute top-6 right-6 opacity-50"
+    width="40"
+    height="40"
+    fill="none"
+    stroke="currentColor"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    viewBox="0 0 24 24"
+  >
+    <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+  </svg>
+
+  <div class="flex justify-center lg:gap-16 flex-wrap">
+    <!-- Points System as the Main Focus -->
+    <div class="mb-6">
+      <p class="text-2xl font-bold mb-4">Points System</p>
+
+      <!-- Display Points Balance -->
+      <div class="card">
+        <div class="card-header">
+          <h2>Your Points Balance</h2>
+        </div>
+
+        <div class="card-body" *ngIf="!loading && !error">
+          <div *ngIf="userPoints" class="points-info">
+            <div class="points-section">
+              <h3>Total Points</h3>
+              <div class="points-value">{{ userPoints.balance }}</div>
+            </div>
+
+            <div class="points-section">
+              <h3>Available Voucher</h3>
+              <div class="voucher-value">{{ userPoints.equivalentVoucher }} DH</div>
+              <button
+                [disabled]="userPoints.balance < 100"
+                (click)="convertToVoucher()"
+                class="convert-btn">
+                Convert to Voucher
+              </button>
+            </div>
+
+            <div class="points-section">
+              <h3>Remaining Points</h3>
+              <div class="points-value">{{ userPoints.convertedPoints }}</div>
+            </div>
+
+            <div class="conversion-rates">
+              <h3>Conversion Rates</h3>
+              <ul>
+                <li>500 points = 350 DH voucher</li>
+                <li>200 points = 120 DH voucher</li>
+                <li>100 points = 50 DH voucher</li>
+              </ul>
+            </div>
+
+            <div class="material-rates">
+              <h3>Points per KG</h3>
+              <ul>
+                <li>Plastic: 2 points</li>
+                <li>Glass: 1 point</li>
+                <li>Paper: 1 point</li>
+                <li>Metal: 5 points</li>
+              </ul>
+            </div>
+          </div>
+
+          <div *ngIf="!userPoints" class="no-points">
+            <p>No points found. Start recycling to earn points!</p>
+          </div>
+        </div>
+
+        <div *ngIf="loading" class="loading">
+          Loading...
+        </div>
+
+        <div *ngIf="error" class="error">
+          {{ error }}
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-center flex-col">
+      <!-- Points Calculation Rules -->
+      <div class="mb-6">
+        <p class="text-lg font-bold mb-2">How Points Are Calculated</p>
+        <ul class="list-disc list-inside text-sm">
+          <li>Plastic: 2 points/kg</li>
+          <li>Glass: 1 point/kg</li>
+          <li>Paper: 1 point/kg</li>
+          <li>Metal: 5 points/kg</li>
+        </ul>
+      </div>
+
+      <!-- Voucher Conversion Rules -->
+      <div class="mb-6">
+        <p class="text-lg font-bold mb-2">Convert Points to Vouchers</p>
+        <ul class="list-disc list-inside text-sm">
+          <li>100 points = 50 Dh voucher</li>
+          <li>200 points = 120 Dh voucher</li>
+          <li>500 points = 350 Dh voucher</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="flex justify-between">
+    <a
+      href="#"
+      class="flex-1 flex items-center justify-center p-3 rounded-xl bg-white text-green-500 mr-4 transition-transform transform hover:-translate-y-1 hover:shadow-lg"
+    >
+      <svg
+        class="mr-2"
+        width="16"
+        height="16"
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+      >
+        <path d="M7 17l9.2-9.2M17 17V7H7"></path>
+      </svg>
+      Transfer Points
+    </a>
+    <a
+      href="#"
+      class="flex-1 flex items-center justify-center p-3 rounded-xl bg-green-800 text-white transition-transform transform hover:-translate-y-1 hover:shadow-lg"
+    >
+      <svg
+        class="mr-2"
+        width="16"
+        height="16"
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-7h-2c0-1-.5-1.5-1-2h0V5z"
+        ></path>
+        <path d="M13 5c-1 1.5-2 3-2 3"></path>
+        <path d="M16 5c1 1.5 2 3 2 3"></path>
+      </svg>
+      Redeem Voucher
+    </a>
+  </div>
+</div>

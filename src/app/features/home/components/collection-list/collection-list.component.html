@@ -1,0 +1,42 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">Collection Requests</h2>
+    <a
+      routerLink="/home/form"
+      class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+    >
+      New Collection
+    </a>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-8">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
+    <p class="mt-4 text-gray-600">Loading collections...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
+    {{ error }}
+  </div>
+
+  <!-- No Collections State -->
+  <div *ngIf="!loading && !error && collections.length === 0" class="text-center py-8">
+    <p class="text-gray-600">No collections found.</p>
+    <a
+      routerLink="/home/form"
+      class="inline-block mt-4 text-green-600 hover:text-green-700 font-medium"
+    >
+      Create your first collection request
+    </a>
+  </div>
+
+  <!-- Collections List -->
+  <div *ngIf="!loading && !error && collections.length > 0" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <app-collection-card
+      *ngFor="let collection of collections"
+      [collection]="collection"
+      [isCollector]="isCollector"
+    ></app-collection-card>
+  </div>
+</div>

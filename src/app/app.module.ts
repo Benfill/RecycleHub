@@ -7,6 +7,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { SharedModule } from './shared/shared.module';
 import { FeaturesModule } from './features/features.module';
 import { CoreModule } from './core/core.module';
+import { AuthEffects } from './core/store/auth/auth.effects';
+import { reducers } from './core/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../../environement/environment';
 
 @NgModule({
   declarations: [
@@ -15,8 +19,12 @@ import { CoreModule } from './core/core.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({}, {}),
-    EffectsModule.forRoot([]),
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([AuthEffects]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: !environment.production
+    }),
     SharedModule,
     FeaturesModule,
     CoreModule,

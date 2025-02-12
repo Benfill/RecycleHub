@@ -12,5 +12,6 @@ export const environment = {
       picture: "https://avatars.githubusercontent.com/u/109225791?v=4",
       type: 'collector'
     }
-  ]
+  ],
+  production: false
 }

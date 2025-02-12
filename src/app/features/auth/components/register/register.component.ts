@@ -1,8 +1,11 @@
+import { User } from './../../../../core/models/user.model';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth/auth.service';
-import { User } from '../../../../core/models/user.model';
+import { Store } from '@ngrx/store';
+import { register } from '../../../../core/store/auth/auth.actions';
+import { generateId } from '../../../../shared/utils/generateId';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +21,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private store: Store
   ) {
     this.registerForm = this.fb.group({
       firstName: ['', [Validators.required]],
@@ -32,7 +36,7 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  // getFileFormat(file) {
+  // getFilePath(file) {
 
   // }
 
@@ -40,24 +44,32 @@ export class RegisterComponent implements OnInit {
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['/']);
     }
+
+    // Add subscription to handle registration states
+    // this.store.select(state => state['auth']).subscribe((authState: any) => {
+    //   this.isLoading = authState.loading;
+    //   this.error = authState.error;
+
+    //   if (authState.error) {
+    //     this.isLoading = false;
+    //   }
+    // });
   }
 
   onSubmit(): void {
-    console.log(this.registerForm.invalid);
-
     if (this.registerForm.invalid) {
       return;
     }
 
     this.isLoading = true;
     this.error = null;
-    console.log("test");
 
-    const user: Partial<User> = this.registerForm.value;
+    // Create a new object instead of modifying the form value directly
+    const user: Partial<User> = {
+      ...this.registerForm.value,
+      id: generateId()
+    };
 
-    console.log(user);
-
-
-    // this.authService.register(email, password)
+    this.store.dispatch(register({ user: user as User }));
   }
 }

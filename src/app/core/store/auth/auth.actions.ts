@@ -33,3 +33,38 @@ export const registerFailure = createAction(
   '[Auth] Register Failure',
   props<{ error: any }>()
 );
+
+export const updateProfile = createAction(
+  '[Auth] Update Profile',
+  props<{ user: User }>()
+);
+
+export const updateProfileSuccess = createAction(
+  '[Auth] Update Profile Success',
+  props<{ user: User }>()
+);
+
+export const updateProfileFailure = createAction(
+  '[Auth] Update Profile Failure',
+  props<{ error: string }>()
+);
+
+export const deleteAccount = createAction(
+  '[Auth] Delete Account',
+  props<{ userId: string }>()
+);
+
+export const deleteAccountSuccess = createAction(
+  '[Auth] Delete Account Success'
+);
+
+export const deleteAccountFailure = createAction(
+  '[Auth] Delete Account Failure',
+  props<{ error: string }>()
+);
+
+export const initAuth = createAction('[Auth] Initialize Auth');
+export const initAuthSuccess = createAction(
+  '[Auth] Initialize Auth Success',
+  props<{ user: User }>()
+);

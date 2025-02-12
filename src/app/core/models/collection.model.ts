@@ -1,3 +1,5 @@
+import { User } from "./user.model";
+
 export enum WasteType {
   PLASTIC = 'PLASTIC',
   GLASS = 'GLASS',
@@ -13,7 +15,7 @@ export const WasteTypePoints: Record<WasteType, number> = {
 };
 export interface Collection {
   id:string,
-  type: WasteType,
+  type: WasteType[],
   picture: string | null,
   weight: number,
   address:string,
@@ -21,6 +23,7 @@ export interface Collection {
   date:string,
   timeSlot:string
   note: string | null,
-  status: 'pending' | 'occupied' | 'inProgress' | 'validated' | 'cancelled';
+  status: 'pending' | 'occupied' | 'inProgress' | 'validated' | 'cancelled',
+  user:User
 }
 

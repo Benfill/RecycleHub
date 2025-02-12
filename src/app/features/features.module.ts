@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeModule } from './home/home.module';
-import { ProfilModule } from './profile/profile.module';
 import { AuthModule } from './auth/auth.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ProfileModule } from './profile/profile.module';
 
 
 
@@ -11,8 +12,9 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     CommonModule,
     HomeModule,
-    ProfilModule,
-    AuthModule
+    AuthModule,
+    ReactiveFormsModule,
+    ProfileModule
   ]
 })
 export class FeaturesModule { }

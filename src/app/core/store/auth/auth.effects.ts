@@ -1,5 +1,3 @@
-import { User } from './../../models/user.model';
-import { AuthState } from './auth.reducer';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Router } from '@angular/router';
@@ -13,25 +11,14 @@ export class AuthEffects {
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.login),
-      tap(() => console.log('Login action dispatched')),
       mergeMap(({ credentials }) =>
         this.authService.login(credentials.email, credentials.password).pipe(
-          tap(response => {
-            console.log('Login response received:', response);
-          }),
-          map(response => {
-            console.log('Dispatching loginSuccess with user:', response);
-            return AuthActions.loginSuccess({ user: response! });
-          }),
-          catchError(error => {
-            console.error('Login error:', error);
-            return of(AuthActions.loginFailure({ error }));
-          })
+          map((u) => u !== null ? AuthActions.loginSuccess({user: u}) : AuthActions.loginFailure({error: 'login failer.'})),
+          catchError(error => of(AuthActions.loginFailure({ error: error.message })))
         )
       )
     )
   );
-
   loginSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -44,29 +31,65 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-  // register$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(AuthActions.register),
-  //     mergeMap(({ user }) =>
-  //       this.authService.register(user).pipe(
-  //         map(user => AuthActions.registerSuccess({ user })),
-  //         catchError(error => of(AuthActions.registerFailure({ error })))
-  //       )
-  //     )
-  //   )
-  // );
+  register$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.register),
+      mergeMap(({ user }) =>
+        this.authService.checkUserExists(user.email).pipe(
+          mergeMap(exists => {
+            if (exists) {
+              return of(AuthActions.registerFailure({ error: 'User with this email already exists' }));
+            }
+            return this.authService.register(user).pipe(
+              map(registeredUser => {
+                if (registeredUser) {
+                  localStorage.setItem('users', JSON.stringify([
+                    ...JSON.parse(localStorage.getItem('users') || '[]'),
+                    registeredUser
+                  ]));
+                  return AuthActions.registerSuccess({ user: registeredUser });
+                }
+                return AuthActions.registerFailure({ error: 'Registration failed' });
+              }),
+              catchError(error => {
+                console.error('Registration error:', error);
+                return of(AuthActions.registerFailure({
+                  error: error.message || 'An error occurred during registration'
+                }));
+              })
+            );
+          }),
+          catchError(error => {
+            console.error('Check user exists error:', error);
+            return of(AuthActions.registerFailure({
+              error: error.message || 'An error occurred while checking user existence'
+            }));
+          })
+        )
+      )
+    )
+  );
 
-  // logout$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(AuthActions.logout),
-  //     mergeMap(() =>
-  //       this.authService.logout().pipe(
-  //         map(() => AuthActions.logoutSuccess()),
-  //         catchError(() => of(AuthActions.logoutSuccess()))
-  //       )
-  //     )
-  //   )
-  // );
+  registerSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.registerSuccess),
+        tap(() => {
+          this.router.navigate(['/auth/login']);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.logout),
+      tap(() => {
+        this.authService.logout();
+      }),
+      map(() => AuthActions.logoutSuccess())
+    )
+  );
 
   logoutSuccess$ = createEffect(
     () =>
