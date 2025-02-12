@@ -1,79 +1,81 @@
 import { Collection } from './../../models/collection.model';
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '../local-storage/local-storage.service';
-import { Observable, pipe } from 'rxjs';
-
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CollectionService {
+  private readonly COLLECTIONS_KEY = 'collections';
 
-  constructor(private storage:LocalStorageService) { }
+  constructor(private storage: LocalStorageService) { }
 
-  getAll(): Observable<Collection[] | null> {
-    return new Observable(subscriber => {
-      subscriber.next(this.storage.getItem("collections"));
-    });
+  getAll(): Observable<Collection[]> {
+    const collections = this.storage.getItem(this.COLLECTIONS_KEY);
+    return of(collections || []);
   }
 
-  getCollectionObs(id:string):Observable<Collection | null> {
-    const collection = this.getCollection(id);
-    return new Observable(sub => {
-      sub.next(collection)
-    });
+  getCollectionObs(id: string): Observable<Collection | null> {
+    return of(this.getCollection(id));
   }
 
-  private getCollection(id:string): Collection | null {
-    const collections$ = this.getAll();
-    let collection:Collection | null = null
-    collections$.subscribe(pipe(collections => {
-      if(collections)
-        collection = collections?.filter(c => c.id === id)[0];
-    }))
-    return collection;
+  private getCollection(id: string): Collection | null {
+    const collections = this.storage.getItem(this.COLLECTIONS_KEY);
+    if (!collections) return null;
+
+    return collections.find((c: { id: string; }) => c.id === id) || null;
   }
 
-  addCollection(collection:Collection):boolean {
-    if(!this.checker(collection.id)) return false
+  addCollection(collection: Collection): boolean {
+    try {
+      const collections = this.storage.getItem(this.COLLECTIONS_KEY) || [];
 
-    const collections$ = this.getAll()
+      // Check if ID already exists
+      if (collections.some((c: { id: string; }) => c.id === collection.id)) {
+        return false;
+      }
 
-    collections$.subscribe(pipe(collections => {
-      if(collections !== null) collections.push(collection)
-      else collections = [collection]
-      this.storage.setItem('collections', JSON.stringify(collections))
-    }))
-
-    return true;
+      collections.push(collection);
+      this.storage.setItem(this.COLLECTIONS_KEY, JSON.stringify(collections));
+      return true;
+    } catch (error) {
+      console.error('Error adding collection:', error);
+      return false;
+    }
   }
 
-  updateCollection(id: string):boolean {
-    let checker = this.checker(id);
-    if(!checker) return checker;
+  updateCollection(collection: Collection): boolean {
+    try {
+      const collections = this.storage.getItem(this.COLLECTIONS_KEY) || [];
+      const index = collections.findIndex((c: { id: string; }) => c.id === collection.id);
 
-    this.deleteCollection(id);
-    this.addCollection(this.getCollection(id)!)
-    return true;
+      if (index === -1) return false;
+
+      collections[index] = collection;
+      this.storage.setItem(this.COLLECTIONS_KEY, JSON.stringify(collections));
+      return true;
+    } catch (error) {
+      console.error('Error updating collection:', error);
+      return false;
+    }
   }
 
-  deleteCollection(id: string):boolean {
-    let checker = this.checker(id);
-    if(!checker) return checker;
+  deleteCollection(id: string): boolean {
+    try {
+      const collections = this.storage.getItem(this.COLLECTIONS_KEY);
+      if (!collections) return false;
 
-    const collections$ = this.getAll();
-    collections$.subscribe(pipe(collections => {
-      if(collections)
-        collections = collections.filter(c => c.id !== id)
-      checker = true
-      this.storage.setItem('collections', JSON.stringify(collections))
-    }))
-
-    return checker;
+      const filteredCollections = collections.filter((c: { id: string; }) => c.id !== id);
+      this.storage.setItem(this.COLLECTIONS_KEY, JSON.stringify(filteredCollections));
+      return true;
+    } catch (error) {
+      console.error('Error deleting collection:', error);
+      return false;
+    }
   }
 
-  private checker(id:string): boolean{
-    if(this.getCollection(id)) return true;
-    else return false
+  private checker(id: string): boolean {
+    return this.getCollection(id) !== null;
   }
 }

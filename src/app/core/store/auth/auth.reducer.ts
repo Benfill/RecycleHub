@@ -5,7 +5,7 @@ import { User } from '../../models/user.model';
 export interface AuthState {
   user: User | null;
   loading: boolean;
-  error: any | null;
+  error: string | null;
 }
 
 export const initialState: AuthState = {
@@ -17,23 +17,41 @@ export const initialState: AuthState = {
 export const authReducer = createReducer(
   initialState,
 
-  on(AuthActions.login, state => ({
+  on(AuthActions.login, (state) => ({
     ...state,
     loading: true,
     error: null
   })),
 
-  on(AuthActions.loginSuccess, (state, { user }) => {
-    console.log('Auth reducer handling loginSuccess with user:', user);
-    return {
-      ...state,
-      user,
-      loading: false,
-      error: null
-    };
-  }),
+  on(AuthActions.loginSuccess, (state, { user }) => ({
+    ...state,
+    user,
+    loading: false,
+    error: null
+  })),
 
   on(AuthActions.loginFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error
+  })),
+
+  on(AuthActions.logout, () => initialState),
+
+  on(AuthActions.updateProfile, (state) => ({
+    ...state,
+    loading: true,
+    error: null
+  })),
+
+  on(AuthActions.updateProfileSuccess, (state, { user }) => ({
+    ...state,
+    user,
+    loading: false,
+    error: null
+  })),
+
+  on(AuthActions.updateProfileFailure, (state, { error }) => ({
     ...state,
     loading: false,
     error
@@ -44,5 +62,20 @@ export const authReducer = createReducer(
     user: null,
     loading: false,
     error: null
-  }))
+  })),
+
+  on(AuthActions.deleteAccountSuccess, () => initialState),
+
+  on(AuthActions.deleteAccountFailure, (state, { error }) => ({
+    ...state,
+    error,
+    auth: false
+  })),
+
+  on(AuthActions.initAuthSuccess, (state, { user }) => ({
+    ...state,
+    user,
+    loading: false,
+    error: null
+  })),
 );

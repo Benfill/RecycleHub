@@ -1,72 +1,61 @@
 <!-- collection-card.component.html -->
-<div
-  class="hover:shadow-lg px-20 bg-gradient-to-br from-green-800 to-green-400 transition-shadow bg-white rounded-lg shadow"
-  *ngIf="collection"
->
-  <!-- Card Header -->
-  <div class="p-4 border-b">
-    <div class="flex justify-between items-start">
-      <div class="flex items-center space-x-2">
-        <i class="fas fa-box"></i>
-        <span class="font-semibold">
+<div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+  <div class="p-6">
+    <!-- Header -->
+    <div class="flex justify-between items-start mb-4">
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800">
           {{ collection.type }}
-        </span>
+        </h3>
+        <p class="text-sm text-gray-600">
+          {{ formatDate(collection.date) }}
+        </p>
       </div>
-      <span
-        [class]="
-          'px-2 py-1 rounded-full text-sm ' + getStatusColor(collection.status)
-        "
-      >
-        {{
-          collection.status.charAt(0).toUpperCase() + collection.status.slice(1)
-        }}
+      <span [class]="'px-2 py-1 text-xs font-semibold rounded-full ' + getStatusClass(collection.status)">
+        {{ collection.status }}
       </span>
     </div>
-  </div>
 
-  <!-- Card Content -->
-  <div class="p-4 space-y-4">
-    <!-- Image if available -->
-    <img
-      [src]="
-        collection.picture ? 'assets/image/7299445.png' : collection.picture
-      "
-      alt="Collection"
-      class="w-full h-48 object-cover rounded-md"
-    />
-
-    <div class="space-y-3">
-      <!-- Address -->
-      <div class="flex items-start space-x-2">
-        <i class="fas fa-map-marker-alt mt-1"></i>
-        <div>
-          <p class="font-medium">{{ collection.address }}</p>
-          <p class="text-sm text-white">{{ collection.city }}</p>
-        </div>
-      </div>
-
-      <!-- Date -->
-      <div class="flex items-center space-x-2">
-        <i class="fas fa-calendar"></i>
-        <span>{{ collection.date | date }}</span>
-      </div>
-
-      <!-- Weight -->
-      <div class="flex items-center space-x-2">
-        <i class="fas fa-trash"></i>
+    <!-- Details -->
+    <div class="space-y-2">
+      <div class="flex items-center text-gray-700">
+        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/>
+        </svg>
         <span>{{ collection.weight }} kg</span>
       </div>
 
-      <!-- Note if available -->
-      <div *ngIf="collection.note" class="flex items-start space-x-2">
-        <i class="fas fa-clipboard-list mt-1"></i>
-        <p class="text-sm text-white">{{ collection.note }}</p>
+      <div class="flex items-center text-gray-700">
+        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <span>{{ collection.address }}, {{ collection.city }}</span>
+      </div>
+
+      <div class="flex items-center text-gray-700">
+        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <span>{{ collection.timeSlot }}</span>
+      </div>
+
+      <div *ngIf="collection.note" class="text-gray-600 text-sm mt-2">
+        <p class="font-medium">Note:</p>
+        <p>{{ collection.note }}</p>
       </div>
     </div>
-  </div>
 
-  <!-- Card Footer -->
-  <div class="p-4 border-t">
-    <p class="text-xs text-white">ID: {{ collection.id }}</p>
+    <!-- Collector Info (only visible to collectors) -->
+    <div *ngIf="isCollector" class="mt-4 pt-4 border-t border-gray-200">
+      <p class="text-sm text-gray-600">
+        <span class="font-medium">Requested by:</span>
+        {{ collection.user.firstName }} {{ collection.user.lastName }}
+      </p>
+    </div>
   </div>
 </div>

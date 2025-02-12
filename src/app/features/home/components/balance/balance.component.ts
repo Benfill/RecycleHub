@@ -1,19 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { PointService } from '../../../../core/services/point/point.service';
+import { UserService } from '../../../../core/services/user/user.service';
 import { Point } from '../../../../core/models/point.model';
-import { User } from '../../../../core/models/user.model';
 
 @Component({
   selector: 'app-balance',
   templateUrl: './balance.component.html',
-  styleUrl: './balance.component.scss'
+  styleUrls: ['./balance.component.scss']
 })
-export class BalanceComponent {
-  user: Partial<User> = { id: "EFKEFKEFK", firstName: 'John Doe' } // Not displayed
-  pointData: Point = {
-    id: "efkjkefje",
-    user: this.user as User,
-    balance: 750, // Example points balance
-    convertedPoints: 500, // Example converted points
-    equivalentVoucher: 350, // Example voucher value
-  };
+export class BalanceComponent implements OnInit {
+  userPoints: Point | null = null;
+  loading = true;
+  error = '';
+
+  constructor(
+    private pointService: PointService,
+    private userService: UserService
+  ) {}
+
+  ngOnInit() {
+    this.loadUserPoints();
+  }
+
+  loadUserPoints() {
+    this.userService.getCurrentUser().subscribe(user => {
+      if (user) {
+        this.pointService.getUserPoints(user.id).subscribe(points => {
+          this.userPoints = points;
+          this.loading = false;
+        });
+      } else {
+        this.error = 'User not found';
+        this.loading = false;
+      }
+    });
+  }
+
+  convertToVoucher() {
+    if (!this.userPoints?.user.id) return;
+
+    this.pointService.convertPointsToVoucher(this.userPoints.user.id).subscribe(result => {
+      if (result.success) {
+        this.loadUserPoints(); // Reload points after conversion
+      }
+    });
+  }
 }

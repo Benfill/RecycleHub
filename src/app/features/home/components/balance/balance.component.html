@@ -22,26 +22,66 @@
       <p class="text-2xl font-bold mb-4">Points System</p>
 
       <!-- Display Points Balance -->
-      <div class="bg-white/10 p-4 rounded-lg mb-4">
-        <p class="text-lg font-semibold">Your Points Balance</p>
-        <p class="text-3xl font-bold text-shadow">
-          {{ pointData.balance }} points
-        </p>
-      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2>Your Points Balance</h2>
+        </div>
 
-      <!-- Display Converted Points and Voucher -->
-      <div class="bg-white/10 p-4 rounded-lg mb-4">
-        <p class="text-lg font-semibold">Converted Points</p>
-        <p class="text-2xl font-bold text-shadow">
-          {{ pointData.convertedPoints }} points
-        </p>
-      </div>
+        <div class="card-body" *ngIf="!loading && !error">
+          <div *ngIf="userPoints" class="points-info">
+            <div class="points-section">
+              <h3>Total Points</h3>
+              <div class="points-value">{{ userPoints.balance }}</div>
+            </div>
 
-      <div class="bg-white/10 p-4 rounded-lg mb-4">
-        <p class="text-lg font-semibold">Equivalent Voucher</p>
-        <p class="text-2xl font-bold text-shadow">
-          {{ pointData.equivalentVoucher }} Dh
-        </p>
+            <div class="points-section">
+              <h3>Available Voucher</h3>
+              <div class="voucher-value">{{ userPoints.equivalentVoucher }} DH</div>
+              <button
+                [disabled]="userPoints.balance < 100"
+                (click)="convertToVoucher()"
+                class="convert-btn">
+                Convert to Voucher
+              </button>
+            </div>
+
+            <div class="points-section">
+              <h3>Remaining Points</h3>
+              <div class="points-value">{{ userPoints.convertedPoints }}</div>
+            </div>
+
+            <div class="conversion-rates">
+              <h3>Conversion Rates</h3>
+              <ul>
+                <li>500 points = 350 DH voucher</li>
+                <li>200 points = 120 DH voucher</li>
+                <li>100 points = 50 DH voucher</li>
+              </ul>
+            </div>
+
+            <div class="material-rates">
+              <h3>Points per KG</h3>
+              <ul>
+                <li>Plastic: 2 points</li>
+                <li>Glass: 1 point</li>
+                <li>Paper: 1 point</li>
+                <li>Metal: 5 points</li>
+              </ul>
+            </div>
+          </div>
+
+          <div *ngIf="!userPoints" class="no-points">
+            <p>No points found. Start recycling to earn points!</p>
+          </div>
+        </div>
+
+        <div *ngIf="loading" class="loading">
+          Loading...
+        </div>
+
+        <div *ngIf="error" class="error">
+          {{ error }}
+        </div>
       </div>
     </div>
 

@@ -24,7 +24,7 @@ const routes:Routes = [
       },
       {
         path: 'collections',
-        component: CollectionCardComponent
+        component: CollectionListComponent
       },
       {
         path: 'balance',

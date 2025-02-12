@@ -8,9 +8,7 @@
           RecycleHub
         </a>
         <!-- Nav Links -->
-        <ul
-          class="hidden md:flex font-semibold font-heading space-x-12"
-        >
+        <ul class="hidden md:flex font-semibold font-heading space-x-12">
           <li>
             <a class="hover:text-gray-200" [routerLink]="'home/collections'"
               >Collections</a
@@ -24,7 +22,11 @@
         </ul>
         <!-- Header Icons -->
         <div class="hidden xl:flex space-x-5 items-center justify-center">
-          <a *ngIf="isAutenticated" class="hover:text-gray-200" [routerLink]="'home/form'">
+          <a
+            *ngIf="isAutenticated"
+            class="hover:text-gray-200"
+            [routerLink]="'home/form'"
+          >
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -79,7 +81,8 @@
       <!-- Responsive navbar -->
       <a
         class="hover:text-gray-200 xl:hidden flex mr-6 items-center"
-        (routerLink)="('home/form')"
+        *ngIf="isAutenticated"
+        [routerLink]="'home/form'"
       >
         <svg
           viewBox="0 0 24 24"

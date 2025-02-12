@@ -27,10 +27,10 @@
                   formControlName="type"
                   class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                 >
-                  <option value="PLASTIC">Plastic</option>
-                  <option value="GLASS">Glass</option>
-                  <option value="PAPER">Paper</option>
-                  <option value="METAL">Metal</option>
+                  <option value="">Select waste type</option>
+                  <option *ngFor="let type of wasteTypes" [value]="type">
+                    {{type}}
+                  </option>
                 </select>
               </div>
 
@@ -70,65 +70,60 @@
                 />
               </div>
 
-              <!-- Date and Time Selection -->
+              <!-- Date -->
               <div class="md:col-span-5">
-                <div class="grid grid-cols-2 gap-4 ">
-                  <!-- Date -->
+                <label for="date">Collection Date</label>
+                <input
+                  type="date"
+                  id="date"
+                  formControlName="date"
+                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                />
+              </div>
+
+              <!-- Time Range -->
+              <div class="md:col-span-5">
+                <div class="grid grid-cols-2 gap-4">
+                  <!-- Start Time -->
                   <div>
-                    <label for="date">Collection Date</label>
-                    <input
-                      type="date"
-                      id="date"
-                      formControlName="date"
+                    <label for="startTime">Start Time</label>
+                    <select
+                      id="startTime"
+                      formControlName="startTime"
                       class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                    />
+                    >
+                      <option value="">Select Start Time</option>
+                      <option value="09h00">09h00</option>
+                      <option value="10h00">10h00</option>
+                      <option value="11h00">11h00</option>
+                      <option value="12h00">12h00</option>
+                      <option value="13h00">13h00</option>
+                      <option value="14h00">14h00</option>
+                      <option value="15h00">15h00</option>
+                      <option value="16h00">16h00</option>
+                      <option value="17h00">17h00</option>
+                    </select>
                   </div>
 
-                  <!-- Time Range Selection -->
-                  <div class="md:col-span-5">
-                    <div class="grid grid-cols-2 gap-4">
-                      <!-- Start Time -->
-                      <div>
-                        <label for="startTime">Start Time</label>
-                        <select
-                          id="startTime"
-                          formControlName="startTime"
-                          class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        >
-                          <option value="">Select Start Time</option>
-                          <option value="09h00">09h00</option>
-                          <option value="10h00">10h00</option>
-                          <option value="11h00">11h00</option>
-                          <option value="12h00">12h00</option>
-                          <option value="13h00">13h00</option>
-                          <option value="14h00">14h00</option>
-                          <option value="15h00">15h00</option>
-                          <option value="16h00">16h00</option>
-                          <option value="17h00">17h00</option>
-                        </select>
-                      </div>
-
-                      <!-- End Time -->
-                      <div>
-                        <label for="endTime">End Time</label>
-                        <select
-                          id="endTime"
-                          formControlName="endTime"
-                          class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                        >
-                          <option value="">Select End Time</option>
-                          <option value="10h00">10h00</option>
-                          <option value="11h00">11h00</option>
-                          <option value="12h00">12h00</option>
-                          <option value="13h00">13h00</option>
-                          <option value="14h00">14h00</option>
-                          <option value="15h00">15h00</option>
-                          <option value="16h00">16h00</option>
-                          <option value="17h00">17h00</option>
-                          <option value="18h00">18h00</option>
-                        </select>
-                      </div>
-                    </div>
+                  <!-- End Time -->
+                  <div>
+                    <label for="endTime">End Time</label>
+                    <select
+                      id="endTime"
+                      formControlName="endTime"
+                      class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                    >
+                      <option value="">Select End Time</option>
+                      <option value="10h00">10h00</option>
+                      <option value="11h00">11h00</option>
+                      <option value="12h00">12h00</option>
+                      <option value="13h00">13h00</option>
+                      <option value="14h00">14h00</option>
+                      <option value="15h00">15h00</option>
+                      <option value="16h00">16h00</option>
+                      <option value="17h00">17h00</option>
+                      <option value="18h00">18h00</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -146,11 +141,17 @@
 
               <!-- Submit Button -->
               <div class="md:col-span-5 text-right">
+                <div *ngIf="loading" class="loading text-white mb-2">
+                  Processing...
+                </div>
+                <div *ngIf="error" class="error-message text-red-500 mb-2">
+                  {{ error }}
+                </div>
                 <button
                   type="submit"
                   class="bg-green-800 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
-                  [disabled]="collectionForm.invalid"
-                  [ngClass]="!collectionForm.valid ? 'cursor-not-allowed' : ''"
+                  [disabled]="collectionForm.invalid || loading"
+                  [ngClass]="{'opacity-50 cursor-not-allowed': collectionForm.invalid || loading}"
                 >
                   Submit
                 </button>

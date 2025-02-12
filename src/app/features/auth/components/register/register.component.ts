@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth/auth.service';
 import { Store } from '@ngrx/store';
 import { register } from '../../../../core/store/auth/auth.actions';
+import { generateId } from '../../../../shared/utils/generateId';
 
 @Component({
   selector: 'app-register',
@@ -21,7 +22,7 @@ export class RegisterComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private store:Store
+    private store: Store
   ) {
     this.registerForm = this.fb.group({
       firstName: ['', [Validators.required]],
@@ -43,11 +44,19 @@ export class RegisterComponent implements OnInit {
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['/']);
     }
+
+    // Add subscription to handle registration states
+    // this.store.select(state => state['auth']).subscribe((authState: any) => {
+    //   this.isLoading = authState.loading;
+    //   this.error = authState.error;
+
+    //   if (authState.error) {
+    //     this.isLoading = false;
+    //   }
+    // });
   }
 
   onSubmit(): void {
-    // console.log(this.registerForm.errors);
-
     if (this.registerForm.invalid) {
       return;
     }
@@ -55,9 +64,12 @@ export class RegisterComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
 
-    const user: Partial<User> = this.registerForm.value;
+    // Create a new object instead of modifying the form value directly
+    const user: Partial<User> = {
+      ...this.registerForm.value,
+      id: generateId()
+    };
 
-    this.store.dispatch(register({user:user as User}))
-
+    this.store.dispatch(register({ user: user as User }));
   }
 }
