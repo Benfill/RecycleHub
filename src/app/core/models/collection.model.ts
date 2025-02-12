@@ -15,7 +15,7 @@ export const WasteTypePoints: Record<WasteType, number> = {
 };
 export interface Collection {
   id:string,
-  type: WasteType,
+  type: WasteType[],
   picture: string | null,
   weight: number,
   address:string,

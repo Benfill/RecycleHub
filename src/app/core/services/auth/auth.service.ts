@@ -29,21 +29,20 @@ export class AuthService {
   }
 
   register(user: User): Observable<User> {
-    // You might want to remove sensitive information before storing
     const userToStore = { ...user };
     return of(userToStore);
   }
 
   logout(): void {
-    this.localStorage.removeItem('user');
+    this.localStorage.removeItem('currentUser');
   }
 
   isLoggedIn(): boolean {
-    return !!this.localStorage.getItem('user');
+    return !!this.localStorage.getItem('currentUser');
   }
 
   getCurrentUser(): User | null {
-    return this.localStorage.getItem('user');
+    return this.localStorage.getItem('currentUser');
   }
 
   addObservableValue(value:any):Observable<any> {

@@ -29,7 +29,7 @@ export class CollectionFormComponent implements OnInit {
     private router: Router
   ) {
     this.collectionForm = this.fb.group({
-      type: ['', Validators.required],
+      type: [[], Validators.required],
       weight: ['', [Validators.required, Validators.min(0)]],
       address: ['', Validators.required],
       city: ['', Validators.required],

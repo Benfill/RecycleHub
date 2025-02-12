@@ -59,7 +59,7 @@
           <!-- Sign In / Register      -->
           <a
             class="flex items-center hover:text-gray-200"
-            [href]="isAutenticated ? 'profile' : 'auth'"
+            [routerLink]="isAutenticated ? '/profile' : '/auth'"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +116,7 @@
       <!-- Sign In / Register      -->
       <a
         class="flex items-center hover:text-gray-200 self-center mr-12 xl:hidden"
-        [href]="isAutenticated ? 'profile' : 'auth'"
+        [routerLink]="isAutenticated ? '/profile' : '/auth'"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

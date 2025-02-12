@@ -23,12 +23,16 @@ export const authReducer = createReducer(
     error: null
   })),
 
-  on(AuthActions.loginSuccess, (state, { user }) => ({
-    ...state,
-    user,
-    loading: false,
-    error: null
-  })),
+  on(AuthActions.loginSuccess, (state, { user }) => {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    return {
+      ...state,
+      user,
+      loading: false,
+      error: null,
+      auth: true
+    };
+  }),
 
   on(AuthActions.loginFailure, (state, { error }) => ({
     ...state,
