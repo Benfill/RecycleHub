@@ -1,0 +1,151 @@
+<div class="flex flex-wrap place-items-center">
+  <section class="relative mx-auto">
+    <!-- navbar -->
+    <nav class="flex justify-between bg-green-800 text-white w-screen">
+      <div class="px-5 xl:px-12 py-6 flex w-full items-center justify-between">
+        <a class="text-3xl font-bold font-heading" href="/">
+          <!-- <img class="h-9" src="logo.png" alt="logo"> -->
+          RecycleHub
+        </a>
+        <!-- Nav Links -->
+        <ul
+          class="hidden md:flex font-semibold font-heading space-x-12"
+        >
+          <li>
+            <a class="hover:text-gray-200" [routerLink]="'home/collections'"
+              >Collections</a
+            >
+          </li>
+          <li>
+            <a class="hover:text-gray-200" [routerLink]="'home/balance'"
+              >Balance</a
+            >
+          </li>
+        </ul>
+        <!-- Header Icons -->
+        <div class="hidden xl:flex space-x-5 items-center justify-center">
+          <a *ngIf="isAutenticated" class="hover:text-gray-200" [routerLink]="'home/form'">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 hover:text-gray-200"
+            >
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="#ffffff"
+                  stroke-width="1.5"
+                ></circle>
+                <path
+                  d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15"
+                  stroke="#ffffff"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                ></path>
+              </g>
+            </svg>
+          </a>
+          <!-- Sign In / Register      -->
+          <a
+            class="flex items-center hover:text-gray-200"
+            [href]="isAutenticated ? 'profile' : 'auth'"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 hover:text-gray-200"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <!-- Responsive navbar -->
+      <a
+        class="hover:text-gray-200 xl:hidden flex mr-6 items-center"
+        (routerLink)="('home/form')"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 hover:text-gray-200"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="#ffffff"
+              stroke-width="1.5"
+            ></circle>
+            <path
+              d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15"
+              stroke="#ffffff"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            ></path>
+          </g>
+        </svg>
+      </a>
+      <!-- Sign In / Register      -->
+      <a
+        class="flex items-center hover:text-gray-200 self-center mr-12 xl:hidden"
+        [href]="isAutenticated ? 'profile' : 'auth'"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 hover:text-gray-200"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </a>
+    </nav>
+  </section>
+</div>
+<!-- Does this resource worth a follow? -->
+<div class="fixed bottom-2 bg-slate-100 rounded-full right-0 mb-4 mr-6 z-10">
+  <div>
+    <a
+      title="Check My Portfolio"
+      href="https://benfill.vercel.app"
+      target="_blank"
+      class="block w-16 h-16 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-110 hover:rotate-12"
+    >
+      <img
+        class="object-cover object-center w-full h-full rounded-full"
+        src="assets/image/benfill-logo.png"
+      />
+    </a>
+  </div>
+</div>

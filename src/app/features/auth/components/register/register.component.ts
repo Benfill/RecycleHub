@@ -1,8 +1,10 @@
+import { User } from './../../../../core/models/user.model';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth/auth.service';
-import { User } from '../../../../core/models/user.model';
+import { Store } from '@ngrx/store';
+import { register } from '../../../../core/store/auth/auth.actions';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +20,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private store:Store
   ) {
     this.registerForm = this.fb.group({
       firstName: ['', [Validators.required]],
@@ -32,7 +35,7 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  // getFileFormat(file) {
+  // getFilePath(file) {
 
   // }
 
@@ -43,7 +46,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.registerForm.invalid);
+    // console.log(this.registerForm.errors);
 
     if (this.registerForm.invalid) {
       return;
@@ -51,13 +54,10 @@ export class RegisterComponent implements OnInit {
 
     this.isLoading = true;
     this.error = null;
-    console.log("test");
 
     const user: Partial<User> = this.registerForm.value;
 
-    console.log(user);
+    this.store.dispatch(register({user:user as User}))
 
-
-    // this.authService.register(email, password)
   }
 }

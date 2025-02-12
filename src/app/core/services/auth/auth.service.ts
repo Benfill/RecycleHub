@@ -26,6 +26,7 @@ export class AuthService {
 
   register(user:User): Observable<User | null> {
     const savedUser = this.userService.addUser(user);
+    console.log(user);
     if(!savedUser) return this.addObservableValue(null);
 
     return this.addObservableValue(user);

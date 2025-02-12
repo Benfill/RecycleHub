@@ -1,5 +1,3 @@
-import { User } from './../../models/user.model';
-import { AuthState } from './auth.reducer';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Router } from '@angular/router';
@@ -13,20 +11,13 @@ export class AuthEffects {
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.login),
-      tap(() => console.log('Login action dispatched')),
-      mergeMap(({ credentials }) =>
-        this.authService.login(credentials.email, credentials.password).pipe(
-          tap(response => {
-            console.log('Login response received:', response);
-          }),
-          map(response => {
-            console.log('Dispatching loginSuccess with user:', response);
-            return AuthActions.loginSuccess({ user: response! });
-          }),
-          catchError(error => {
-            console.error('Login error:', error);
-            return of(AuthActions.loginFailure({ error }));
-          })
+      tap((action) => {
+        console.log('Login action received in effects:', action);
+      }),
+      mergeMap(({ credentials: {email, password} }) =>
+        this.authService.login(email, password).pipe(
+          map((u) => u !== null ? AuthActions.loginSuccess({user: u}) : AuthActions.loginFailure({error: 'login fails.'})),
+          catchError(error => of(AuthActions.loginFailure({ error: error.message })))
         )
       )
     )

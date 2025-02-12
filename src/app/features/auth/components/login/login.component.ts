@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth/auth.service';
+import { Store } from '@ngrx/store';
+import { login } from '../../../../core/store/auth/auth.actions';
 
 @Component({
   selector: 'app-login',
@@ -17,10 +19,11 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private store:Store
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
@@ -32,8 +35,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.loginForm.invalid);
-
     if (this.loginForm.invalid) {
       return;
     }
@@ -41,9 +42,6 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
 
-    console.log(this.loginForm.value);
-
-
-    // this.authService.login(username, password);
+    this.store.dispatch(login({ credentials: this.loginForm.value }));
   }
 }

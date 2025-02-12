@@ -7,6 +7,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { SharedModule } from './shared/shared.module';
 import { FeaturesModule } from './features/features.module';
 import { CoreModule } from './core/core.module';
+import { AuthEffects } from './core/store/auth/auth.effects';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { CoreModule } from './core/core.module';
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot({}, {}),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([AuthEffects]),
     SharedModule,
     FeaturesModule,
     CoreModule,
