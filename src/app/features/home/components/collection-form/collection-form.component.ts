@@ -80,7 +80,7 @@ export class CollectionFormComponent implements OnInit {
         if (collection.status === 'validated') {
           return this.pointService.addPoints(
             user,
-            formValue.type.toLowerCase(),
+            formValue.type,
             formValue.weight
           );
         }
@@ -89,7 +89,7 @@ export class CollectionFormComponent implements OnInit {
         return this.pointService.getUserPoints(user.id).pipe(
           switchMap(existingPoints => {
             if (!existingPoints) {
-              return this.pointService.addPoints(user, formValue.type.toLowerCase(), 0);
+              return this.pointService.addPoints(user, formValue.type, 0);
             }
             return of(existingPoints); // Convert Point to Observable<Point>
           })

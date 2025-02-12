@@ -31,7 +31,7 @@ export class PointService {
   }
 
   calculatePoints(material: string, weight: number): number {
-    const pointsPerKg = this.MATERIAL_POINTS[material.toLowerCase() as keyof typeof this.MATERIAL_POINTS] || 0;
+    const pointsPerKg = this.MATERIAL_POINTS[material as keyof typeof this.MATERIAL_POINTS] || 0;
     return Math.floor(pointsPerKg * weight);
   }
 
