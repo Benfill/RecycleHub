@@ -2,6 +2,10 @@
 
 RecycleHub is a recycling management application that connects individuals with authorized collectors. The goal is to automate recycling tasks efficiently using a Single Page Application (SPA) built with **Angular 17**, **TailwindCSS**, and **Reactive Forms**. The data is stored locally using Angular's LocalStorage.
 
+![RecycleHub-04-25-2025_01_27_PM](https://github.com/user-attachments/assets/867de156-f37c-4cc5-9f40-069833214f1a)
+![RecycleHub-04-25-2025_01_41_PM](https://github.com/user-attachments/assets/fe759864-d69c-4927-a28f-fbac46153a83)
+![RecycleHub-04-25-2025_01_42_PM](https://github.com/user-attachments/assets/5ee95029-7375-4ad4-b0a9-2af36f689dc8)
+
 ## Features
 
 ### 1. **User Registration & Authentication**
